@@ -23,6 +23,10 @@ class Api::V1::ItemsController < Api::V1::BaseController
     respond_with Item.find(params[:id]).invoice_items
   end
 
+  def merchant
+    respond_with Item.find(params[:id]).merchant
+  end
+
   private
 
   def item_params
