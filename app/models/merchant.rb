@@ -3,10 +3,14 @@ class Merchant < ActiveRecord::Base
   has_many :invoices
 
   def self.most_revenue(limit)
-    all.sort_by(&:revenue).limit(limit)
+    all.sort_by(&:top_revenue).reverse[0...limit.to_i]
+  end
+
+  def top_revenue
+    invoices.success.joins(:invoice_items).sum('quantity * unit_price')
   end
 
   def revenue
-    { revenue: self.invoices.success.joins(:invoice_items).sum('quantity * unit_price').to_s }
+    { revenue: top_revenue.to_s }
   end
 end
