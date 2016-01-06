@@ -3,15 +3,21 @@ class Merchant < ActiveRecord::Base
   has_many :invoices
 
   def self.most_revenue(limit)
-    all.sort_by(&:top_revenue).reverse[0...limit.to_i]
+    all.sort_by(&:top_revenue)
+       .reverse[0...limit.to_i]
   end
 
   def top_revenue
-    invoices.success.joins(:invoice_items).sum('quantity * unit_price')
+    invoices.success
+            .joins(:invoice_items)
+            .sum('quantity * unit_price')
   end
 
   def revenue_by(date)
-    invoices.where(created_at: date).success.joins(:invoice_items).sum('quantity * unit_price')
+    invoices.where(created_at: date)
+            .success
+            .joins(:invoice_items)
+            .sum('quantity * unit_price')
   end
 
   def revenue(params)
@@ -23,8 +29,13 @@ class Merchant < ActiveRecord::Base
   end
 
   def favorite_customer
-    favorite = invoices.success.sort(:customer_id).first.customer_id
-    Customer.find(favorite)
+    Customer.joins(:invoices)
+            .where('invoices.merchant_id = ?', self.id)
+            .joins(:transactions)
+            .where('transactions.result = ?', 'success')
+            .group('id')
+            .order('count(invoices.customer_id) DESC')
+            .first
   end
 
 end
