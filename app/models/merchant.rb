@@ -7,6 +7,23 @@ class Merchant < ActiveRecord::Base
        .reverse[0...limit.to_i]
   end
 
+  def self.most_items(limit)
+    all.sort_by(&:items_sold)
+       .reverse[0...limit.to_i]
+  end
+
+  def self.total_revenue(params)
+    if params[:date]
+      { total_revenue: all.map { |merchant| merchant.revenue_by(params[:date]) }.reduce(:+).to_s }
+    else
+      { total_revenue: all.map { |merchant| merchant.top_revenue }.reduce(:+).to_s }
+    end
+  end
+
+  def items_sold
+    invoices.success.joins(:invoice_items).sum(:quantity)
+  end
+
   def top_revenue
     invoices.success
             .joins(:invoice_items)
