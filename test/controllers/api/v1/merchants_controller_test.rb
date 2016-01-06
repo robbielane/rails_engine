@@ -69,4 +69,19 @@ class Api::V1::MerchantsControllerTest < ActionController::TestCase
     assert_equal 1, json_response.count
     assert_equal item.name, json_response.first['name']
   end
+
+  test "#revenue returns total revenue of successful transactions" do
+    merchant      = Merchant.create!(name: "Merchant Name")
+    item          = merchant.items.create!(name: "Item Name", unit_price: 2000)
+    item1         = merchant.items.create!(name: "Item Name1", unit_price: 4000)
+    invoice       = merchant.invoices.create!(status: 'shipped')
+    invoice_item  = invoice.invoice_items.create!(item_id: item.id, quantity: 2, unit_price: 2000)
+    invoice_item1 = invoice.invoice_items.create!(item_id: item1.id, quantity: 1, unit_price: 4000)
+    transaction   = invoice.transactions.create(result: 'success')
+
+    get :revenue, format: :json, id: merchant.id
+
+    binding.pry
+
+  end
 end
