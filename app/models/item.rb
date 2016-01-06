@@ -5,6 +5,8 @@ class Item < ActiveRecord::Base
 
   before_save :convert_to_dollars
 
+  default_scope { order('id ASC')}
+
   def convert_to_dollars
     self.unit_price =  self.unit_price / 100.00
   end

@@ -23,9 +23,8 @@ class Merchant < ActiveRecord::Base
   end
 
   def favorite_customer
-    binding.pry
-    customer = invoices.success.order(:customer_id).first.customer_id
-    Customer.find(customer)
+    favorite = invoices.success.sort(:customer_id).first.customer_id
+    Customer.find(favorite)
   end
 
 end

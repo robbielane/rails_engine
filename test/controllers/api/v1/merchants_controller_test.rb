@@ -76,11 +76,11 @@ class Api::V1::MerchantsControllerTest < ActionController::TestCase
     item1         = merchant.items.create!(name: "Item Name1", unit_price: 4000)
     invoice       = merchant.invoices.create!(status: 'shipped')
     invoice_item  = invoice.invoice_items.create!(item_id: item.id, quantity: 2, unit_price: 2000)
-    invoice_item1 = invoice.invoice_items.create!(item_id: item1.id, quantity: 1, unit_price: 4000)
+    invoice_item1 = invoice.invoice_items.create!(item_id: item1.id, quantity: 1, unit_price: 4022)
     transaction   = invoice.transactions.create(result: 'success')
 
     get :revenue, format: :json, id: merchant.id
 
-    assert_equal '80.00', json_response['revenue']
+    assert_equal '80.22', json_response['revenue']
   end
 end
