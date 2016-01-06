@@ -10,7 +10,16 @@ class Merchant < ActiveRecord::Base
     invoices.success.joins(:invoice_items).sum('quantity * unit_price')
   end
 
-  def revenue
-    { revenue: top_revenue.to_s }
+  def revenue_by(date)
+    invoices.where(created_at: date).success.joins(:invoice_items).sum('quantity * unit_price')
   end
+
+  def revenue(params)
+    if params[:date]
+      { revenue: revenue_by(params[:date]).to_s }
+    else
+      { revenue: top_revenue.to_s }
+    end
+  end
+
 end

@@ -33,12 +33,12 @@ class Api::V1::MerchantsController < Api::V1::BaseController
   end
 
   def revenue
-    respond_with Merchant.find(params[:id]).revenue
+    respond_with Merchant.find(params[:id]).revenue(merchant_params)
   end
 
   private
 
   def merchant_params
-    params.permit(:name, :id, :updated_at, :created_at)
+    params.permit(:name, :id, :updated_at, :created_at, :date)
   end
 end
