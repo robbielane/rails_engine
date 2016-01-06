@@ -38,4 +38,10 @@ class Merchant < ActiveRecord::Base
             .first
   end
 
+  def customers_with_pending_invoices
+    Customer.joins(:invoices)
+            .joins(:transactions)
+            .where("invoices.merchant_id = ? AND transactions.result = 'failed'", self.id)
+  end
+
 end
