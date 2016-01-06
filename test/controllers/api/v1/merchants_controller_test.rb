@@ -81,7 +81,6 @@ class Api::V1::MerchantsControllerTest < ActionController::TestCase
 
     get :revenue, format: :json, id: merchant.id
 
-    binding.pry
-
+    assert_equal '80.00', json_response['revenue']
   end
 end

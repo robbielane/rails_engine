@@ -27,7 +27,7 @@ ActiveRecord::Schema.define(version: 20160104220142) do
     t.integer  "item_id"
     t.integer  "invoice_id"
     t.integer  "quantity"
-    t.integer  "unit_price"
+    t.float    "unit_price"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
   end
@@ -49,7 +49,7 @@ ActiveRecord::Schema.define(version: 20160104220142) do
   create_table "items", force: :cascade do |t|
     t.string   "name"
     t.string   "description"
-    t.decimal  "unit_price"
+    t.float    "unit_price"
     t.integer  "merchant_id"
     t.datetime "created_at",  null: false
     t.datetime "updated_at",  null: false
@@ -66,10 +66,9 @@ ActiveRecord::Schema.define(version: 20160104220142) do
   create_table "transactions", force: :cascade do |t|
     t.integer  "invoice_id"
     t.string   "credit_card_number"
-    t.string   "credit_card_expiration_date"
     t.string   "result"
-    t.datetime "created_at",                  null: false
-    t.datetime "updated_at",                  null: false
+    t.datetime "created_at",         null: false
+    t.datetime "updated_at",         null: false
   end
 
   add_index "transactions", ["invoice_id"], name: "index_transactions_on_invoice_id", using: :btree

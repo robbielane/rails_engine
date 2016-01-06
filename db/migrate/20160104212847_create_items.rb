@@ -3,7 +3,7 @@ class CreateItems < ActiveRecord::Migration
     create_table :items do |t|
       t.string :name
       t.string :description
-      t.decimal :unit_price
+      t.float :unit_price
       t.references :merchant, index: true, foreign_key: true
 
       t.timestamps null: false

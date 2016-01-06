@@ -7,4 +7,8 @@ class InvoiceItem < ActiveRecord::Base
   def convert_to_dollars
     self.unit_price =  self.unit_price / 100.00
   end
+
+  def unit_price
+    to_s
+  end
 end
