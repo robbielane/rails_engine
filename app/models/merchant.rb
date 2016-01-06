@@ -30,9 +30,8 @@ class Merchant < ActiveRecord::Base
 
   def favorite_customer
     Customer.joins(:invoices)
-            .where('invoices.merchant_id = ?', self.id)
             .joins(:transactions)
-            .where('transactions.result = ?', 'success')
+            .where("invoices.merchant_id = ? AND transactions.result = 'success'", id)
             .group('id')
             .order('count(invoices.customer_id) DESC')
             .first
@@ -40,8 +39,9 @@ class Merchant < ActiveRecord::Base
 
   def customers_with_pending_invoices
     Customer.joins(:invoices)
-            .joins(:transactions)
+            .joins('INNER JOIN transactions ON transactions.invoice_id = invoices.id')
             .where("invoices.merchant_id = ? AND transactions.result = 'failed'", self.id)
+            .distinct
   end
 
 end
