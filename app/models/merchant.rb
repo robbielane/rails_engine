@@ -22,4 +22,8 @@ class Merchant < ActiveRecord::Base
     end
   end
 
+  def favorite_customer
+    
+  end
+
 end

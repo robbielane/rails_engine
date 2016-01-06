@@ -36,6 +36,10 @@ class Api::V1::MerchantsController < Api::V1::BaseController
     respond_with Merchant.find(params[:id]).revenue(merchant_params)
   end
 
+  def favorite_customer
+    respond_with Merchant.find(params[:id]).favorite_customer
+  end
+
   private
 
   def merchant_params
