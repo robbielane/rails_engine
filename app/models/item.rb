@@ -29,10 +29,6 @@ class Item < ActiveRecord::Base
     invoice_items.sum('quantity')
   end
 
-  def items_sold
-    invoice_items.sum(:quantity, conditions: ['item_id = ?', self.id])
-  end
-
   def best_day
     { best_day: invoice_items.success.group("invoices.created_at").order("sum_quantity DESC").sum("quantity").first[0] }
   end
