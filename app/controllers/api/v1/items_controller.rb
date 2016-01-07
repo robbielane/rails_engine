@@ -27,6 +27,18 @@ class Api::V1::ItemsController < Api::V1::BaseController
     respond_with Item.find(params[:id]).merchant
   end
 
+  def most_revenue
+    respond_with Item.most_revenue(params[:quantity])
+  end
+
+  def most_items
+    respond_with Item.most_items(params[:quantity])
+  end
+
+  def best_day
+    respond_with Item.find(params[:id]).best_day
+  end
+
   private
 
   def item_params

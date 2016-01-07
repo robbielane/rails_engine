@@ -11,4 +11,29 @@ class Item < ActiveRecord::Base
     self.unit_price =  self.unit_price / 100.00
   end
 
+  def self.most_revenue(limit)
+    all.sort_by(&:total_revenue)
+       .reverse[0...limit.to_i]
+  end
+
+  def self.most_items(limit)
+    all.sort_by(&:total_sold)
+       .reverse[0...limit.to_i]
+  end
+
+  def total_revenue
+    invoice_items.sum('quantity * unit_price')
+  end
+
+  def total_sold
+    invoice_items.sum('quantity')
+  end
+
+  def items_sold
+    invoice_items.sum(:quantity, conditions: ['item_id = ?', self.id])
+  end
+
+  def best_day
+    { best_day: invoice_items.success.group("invoices.created_at").order("sum_quantity DESC").sum("quantity").first[0] }
+  end
 end

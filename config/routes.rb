@@ -39,11 +39,14 @@ Rails.application.routes.draw do
           get 'find'
           get 'find_all'
           get 'random'
+          get 'most_revenue'
+          get 'most_items'
         end
 
         member do
           get 'invoice_items'
           get 'merchant'
+          get 'best_day'
         end
       end
 
